@@ -1,5 +1,9 @@
 package core
 
+import (
+	"math"
+)
+
 type arithmeticCmp int
 type arithmeticOp int
 
@@ -375,6 +379,20 @@ func (ec *execContext) onePlus(number lispObject) (lispObject, error) {
 	return newFloat(xFloatValue(number) + 1.0), nil
 }
 
+func (ec *execContext) abs(number lispObject) (lispObject, error) {
+	if !numberOrMarkerp(number) {
+		return ec.wrongTypeArgument(ec.s.numberOrMarkerp, number)
+	}
+
+	if integerp(number) {
+		val := float64(xIntegerValue(number))
+		return newInteger(lispInt(math.Abs(val))), nil
+	}
+
+	val := float64(xFloatValue(number))
+	return newFloat(lispFp(math.Abs(val))), nil
+}
+
 func (ec *execContext) arithmeticFloatOperate(op arithmeticOp, val lispObject, objs ...lispObject) (lispObject, error) {
 	return ec.pimacsUnimplemented(ec.nil_, "arithmetic operator for float is unimplemented")
 }
@@ -602,4 +620,5 @@ func (ec *execContext) symbolsOfData() {
 	ec.defSubr2(nil, "aref", (*execContext).aref, 2)
 	ec.defSubr3(nil, "aset", (*execContext).aset, 3)
 	ec.defSubr1(nil, "1+", (*execContext).onePlus, 1)
+	ec.defSubr1(nil, "abs", (*execContext).abs, 1)
 }
