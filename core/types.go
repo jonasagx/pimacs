@@ -82,6 +82,10 @@ type lispCons struct {
 	cdr lispObject
 }
 
+type lispNumber interface {
+	lispInteger | lispFloat
+}
+
 type lispInteger struct {
 	val lispInt
 }

@@ -189,8 +189,16 @@ func xInteger(obj lispObject) *lispInteger {
 	return xCast[*lispInteger](obj, "integer")
 }
 
+func xNumber(obj lispObject) *lispNumber {
+	return xCast[*lispNumber](obj, "number")
+}
+
 func xIntegerValue(obj lispObject) lispInt {
 	return xInteger(obj).val
+}
+
+func xNumberValue(obj lispObject) lispNumber {
+
 }
 
 func xIntegerRune(obj lispObject) rune {
